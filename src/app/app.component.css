@@ -1,0 +1,21 @@
+.number, .operator {
+    display: grid;
+    padding: 20px;
+    width: 300px;
+}
+
+.number {
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.operator {
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.number #zero{
+    grid-row: 4;
+    grid-column: 2;
+}
+
