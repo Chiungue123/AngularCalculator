@@ -1,7 +1,10 @@
+.calculator{
+    width: 300px;
+}
+
 .number, .operator {
     display: grid;
     padding: 20px;
-    width: 300px;
 }
 
 .number {
