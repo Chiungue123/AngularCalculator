@@ -125,39 +125,48 @@ function calculateResult(expression: any[]) {
     }
 
   //capture the number to the left of the operator
-  for (let i = highest_operator.index - 1; i > 0; i--){ 
-    console.log("i: ", expression[i], "index: ", i)
-    // Start to the left of the highest operator and work backwards
-    // Stop when the next operator is found or the end of the array is reached
-    if (!isNaN(expression[i])){
-      //console.log("Number found," + expression[i])
-    }
-    else if (isNaN(expression[i])){
-      //console.log("Operator, ", expression[i])
-      var left_operand = expression.slice(expression[i+1], highest_operator.index)
-      console.log("Left operand: ", left_operand.join(''))
-      break
-    }
-    else if (i == 0){
-      var left_operand = expression.slice(0, highest_operator.index)
-      console.log("Left operand: ", left_operand.join(''))
-      break
-    }
-  }
   if (highest_operator.index -1 == 0 && !isNaN(expression[0])){
-    console.log("The left operand is the first number in the expression: ", expression[0])
+    var left_operand: any[] = expression[0]
+    console.log("Left operand: ", left_operand)
+  }
+  else{
+    for (let i = highest_operator.index - 1; i >= 0; i--){ 
+      if (!isNaN(expression[i])){
+        console.log("Number found," + expression[i])
+        continue
+      }
+  
+      else if (i == 0 && !isNaN(expression[0])){
+        var left_operand = expression.slice(0, highest_operator.index -1)
+        console.log("Left operand: ", left_operand.join(''))
+        break
+      }
+
+      else if (isNaN(expression[i])){
+        console.log("Operator found: ", expression[i])
+        var left_operand = expression.slice(expression[i+1], highest_operator.index)
+        console.log("Left operand: ", left_operand.join(''))
+        break
+      }
+    }
   }
 
   //capture the number to the right of the operator
-  for (let i = highest_operator.index + 1; i < expression.length; i++){
-    if (!isNaN(expression[i])){
-      //console.log("Number found," + expression[i])
-    }
-    else if (isNaN(expression[i])){
-      //console.log("Operator, ", expression[i])
-      var right_operand = expression.slice(highest_operator.index + 1, i)
-      console.log("Right operand: ", right_operand.join(''))
-      break
+  if (highest_operator.index + 1 == (expression.length - 1) && !isNaN(expression[expression.length - 1])){
+    var right_operand: any[] = expression[expression.length - 1]
+    console.log("Right opperand: ", right_operand)
+  }
+  else{
+    for (let i = highest_operator.index; i < expression.length; i++){
+      if (!isNaN(expression[i])){
+        console.log("Number found," + expression[i])
+      }
+      else if (isNaN(expression[i])){
+        console.log("Operator found: ", expression[i])
+        var right_operand = expression.slice(highest_operator.index + 1, i)
+        console.log("Right operand: ", right_operand.join(''))
+        break
+      }
     }
   }
 
