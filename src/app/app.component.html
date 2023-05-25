@@ -6,9 +6,10 @@
 </head>
 <body>
  <div class="calculator">
-   <div class="display">
+   <div class="calculator-display">
      <!-- Display goes here -->
-     {{ expression.join(' ') }}
+     <div class="expression" *ngIf="!isResultShown">{{ expression.join('') }}</div>
+     <div class="result" *ngIf="isResultShown">{{ expression.join('') }} {{ result }}</div>
    </div>
    <div class="number">
      <!-- Buttons go here -->

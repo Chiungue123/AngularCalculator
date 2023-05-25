@@ -11,9 +11,9 @@ export class AppComponent {
   title = 'AngularCalculator';
   expression: any[] = []; // Array to store the expression
   result!: number; // Variable to store the result
-
-  operator!: string;
-  number!: number;
+  operator!: string; // Variable to store the operator
+  number!: number; // Variable to store the number
+  isResultShown: boolean = false;
 
   numberPressed(integer: number){
     this.expression.push(integer)
@@ -24,12 +24,16 @@ export class AppComponent {
     switch(operator){ 
       case '=': {
         console.log("Calculating result")
-        calculateResult(this.expression)
+        this.expression.push(" ",operator)
+        this.result = calculateResult(this.expression)
+        this.isResultShown = true
         break
       }
       case 'clear': {
         console.log("Clearing expression")
         this.expression = []
+        this.result = 0
+        this.isResultShown = false;
         break
       }
       default: {
@@ -47,6 +51,9 @@ function calculateResult(expression: any[]) {
     operator: 0,
     index: -1
   } 
+
+  let result!: number; // This will store the result of the expression
+
   // Sets the operator values
   const bracket: number = 1;
   const exponent: number = 2;
@@ -54,6 +61,10 @@ function calculateResult(expression: any[]) {
   const multiply: number = 4;
   const add: number = 5;
   const subtract: number = 6;
+
+  // Sets the left and right operand variables
+  var left_operand: any[] = [];
+  var right_operand: any[] = [];
 
   // Record highest order operater first
   for (let i = 0; i < expression.length; i++){
@@ -126,25 +137,24 @@ function calculateResult(expression: any[]) {
 
   //capture the number to the left of the operator
   if (highest_operator.index -1 == 0 && !isNaN(expression[0])){
-    var left_operand: any[] = expression[0]
+    left_operand = [expression[0]]
     console.log("Left operand: ", left_operand)
   }
-  else{
+  else {
     for (let i = highest_operator.index - 1; i >= 0; i--){ 
+
       if (!isNaN(expression[i])){
         console.log("Number found," + expression[i])
-        continue
-      }
-  
-      else if (i == 0 && !isNaN(expression[0])){
-        var left_operand = expression.slice(0, highest_operator.index -1)
-        console.log("Left operand: ", left_operand.join(''))
-        break
+        if (i == 0 && !isNaN(expression[0])){
+          left_operand = expression.slice(0, highest_operator.index)
+          console.log("Left operand: ", left_operand.join(''))
+          break
+        }
       }
 
       else if (isNaN(expression[i])){
         console.log("Operator found: ", expression[i])
-        var left_operand = expression.slice(expression[i+1], highest_operator.index)
+        left_operand = expression.slice(expression[i+1], highest_operator.index)
         console.log("Left operand: ", left_operand.join(''))
         break
       }
@@ -153,17 +163,22 @@ function calculateResult(expression: any[]) {
 
   //capture the number to the right of the operator
   if (highest_operator.index + 1 == (expression.length - 1) && !isNaN(expression[expression.length - 1])){
-    var right_operand: any[] = expression[expression.length - 1]
+    right_operand = [expression[expression.length - 1]]
     console.log("Right opperand: ", right_operand)
   }
-  else{
-    for (let i = highest_operator.index; i < expression.length; i++){
+  else {
+    for (let i = highest_operator.index + 1; i <= expression.length; i++){
       if (!isNaN(expression[i])){
         console.log("Number found," + expression[i])
+        if (i == expression.length - 1 && !isNaN(expression[expression.length - 1])){
+          right_operand = expression.slice(highest_operator.index + 1, expression.length)
+          console.log("Right operand: ", right_operand.join(''))
+          break
+        }
       }
+
       else if (isNaN(expression[i])){
-        console.log("Operator found: ", expression[i])
-        var right_operand = expression.slice(highest_operator.index + 1, i)
+        right_operand = expression.slice(highest_operator.index + 1, i)
         console.log("Right operand: ", right_operand.join(''))
         break
       }
@@ -171,6 +186,33 @@ function calculateResult(expression: any[]) {
   }
 
   //calculate adjacent numbers with highest operator them and replacing the result 
-
+  switch (highest_operator.name){
+    case 'divide': {
+      result = Number(left_operand.join('')) / Number(right_operand.join(''))
+      console.log("Result: ", result)
+      break
+    }
+    case 'multiply': {
+      result = Number(left_operand.join('')) * Number(right_operand.join(''))
+      console.log("Result: ", result)
+      break
+    }
+    case 'add': {
+      result = Number(left_operand.join('')) + Number(right_operand.join(''))
+      console.log("Result: ", result)
+      break
+    }
+    case 'subtract': {
+      result = Number(left_operand.join('')) - Number(right_operand.join(''))
+      console.log("Result: ", result)
+      break
+    }
+    default: {
+      result = 0
+      console.log("Result: ", result)
+      break
   }
+}
+return result;
+}
   // TODO: Display the result on the calculator screen
