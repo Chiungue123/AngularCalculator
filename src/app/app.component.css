@@ -2,6 +2,17 @@
     width: 300px;
 }
 
+.calculator-display{
+    height: 75px;
+    background-color: #000;
+    color: #fff;
+    font-size: 40px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    border-color: black;
+}
+
 .number, .operator {
     display: grid;
     padding: 20px;

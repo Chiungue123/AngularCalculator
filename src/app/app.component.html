@@ -9,7 +9,7 @@
    <div class="calculator-display">
      <!-- Display goes here -->
      <div class="expression" *ngIf="!isResultShown">{{ expression.join('') }}</div>
-     <div class="result" *ngIf="isResultShown">{{ expression.join('') }} {{ result }}</div>
+     <div class="result" *ngIf="isResultShown">{{ expression.join('') }} {{ finalResult }}</div>
    </div>
    <div class="number">
      <!-- Buttons go here -->
